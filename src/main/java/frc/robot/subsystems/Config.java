@@ -24,41 +24,19 @@ public class Config {
     public static final double ELEVATOR_MOTOR_STAY = 0.1;
     public static final double ELEVATOR_MOTOR_SPEED_DOWN = -0.5;
 
-//     /////Lift System//////
-//     public static final int LIFT_MOTOR_PORT = 7;
-//     public static final double LIFT_SPEED_UP = 0.5;
-//     public static final double LIFT_STAY = 0.1;
-
-//     public static final int LIFT_ENCODER_A = 4;
-//     public static final int LIFT_ENCODER_B = 5;
-
-// //    public static final double LIFT_ENCODER_DPP =  1 / 162974.66; // distance-per-pulse, in radians based on 4096 pulses per cycle
-//     public static final double LIFT_ENCODER_DPP =  2 * Math.PI / 4096 ; // distance-per-pulse, in radians based on 4096 pulses per cycle
-
-    ///// Drivey Motor Ports /////////
+    ///// Drivetrain Motor Ports /////////
     public static final int DRIVELINE_LEFT_FRONT_MOTOR_PORT 		= 2;
     public static final int DRIVELINE_LEFT_REAR_MOTOR_PORT 		    = 3;
     public static final int DRIVELINE_RIGHT_FRONT_MOTOR_PORT 		= 1;
     public static final int DRIVELINE_RIGHT_REAR_MOTOR_PORT 		= 4;
 
     public static final double MOTOR_TRIM = 0.75;
-    
-    ////////////////////////////////////
-    ///////// Hatch Pneumatics /////////
-    ////////////////////////////////////
-    public static final int HATCH_PORT_0 = 0;
-    public static final int HATCH_PORT_1 = 1;
 
     ///////////////////////////////////
     ///////// Omni Wheel Pneumatics /////////
     ///////////////////////////////////
     public static final int OMNI_PORT_1 = 2;
-    public static final int OMNI_PORT_2 = 3;
-    /*
-    * FIX 
-    * PCM ports 6 and 7 overlap, currently set to 4 and 5
-    */
-    
+    public static final int OMNI_PORT_2 = 3;    
 
     public static final double DRIVE_LEFT_QUAD_DPP = 0.00003844376;    // meters per pulse, measured 2/9/19
     public static final double DRIVE_RIGHT_QUAD_DPP = -DRIVE_LEFT_QUAD_DPP;
