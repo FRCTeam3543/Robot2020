@@ -1,9 +1,6 @@
 # Robot2020
 FRC Team 3543 Robot Code for 2020
 
-To-Do:
-1)
-2)
-3)
-4)
-5)
+Currently has drive only code and support for toggling omni wheels in a butterfly drivebase.
+
+This repository was built off of the RobotDriveWithXboxController repository and carries a few subsystems over.
