@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   public static final LineSensor lineSensor = new LineSensor();
   public static final DistanceSensor distanceSensor = new DistanceSensor();
   public static final OmniWheels omniSwitch = new OmniWheels();
+  public static final Shooter shooterSystem = new Shooter();
   public static final CameraSubsystem cameraVision = new CameraSubsystem();
   
 
@@ -104,6 +105,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    Robot.shooterSystem.shuffleBoard();
   }
 
   boolean lineFollowing = false;

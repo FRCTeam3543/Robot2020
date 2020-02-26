@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Config;
 
@@ -36,7 +37,10 @@ public class OI {
 		checkReset();
 		elevatorControl();
         omniControl();
-        wheelFlip();
+        //wheelFlip();
+        intakeControl();
+        shootControl();
+        reverseShootControl();
 	}
 
 	void checkReset() {
@@ -87,23 +91,54 @@ public class OI {
         }
 	}
 
+    //Omni Controls//
     void omniControl() {
         if (Robot.m_oi.xbox.getAButtonPressed()) {
             Robot.omniSwitch.toggleOmni();
         }
     }
 
+/* Temporarily disabled
     void wheelFlip() {
-        if (Robot.m_oi.xbox.getBButtonPressed()){
+        if (Robot.m_oi.xbox.getBButtonPressed()) {
             Robot.driveSystem.toggleDriveFlip();
+        }
+    }*/
+
+    //Shooting Controls//
+    
+    void intakeControl() {
+        if (Robot.m_oi.xbox.getXButton()) {
+            Robot.shooterSystem.intake();
+        }
+
+        else if (Robot.m_oi.xbox.getXButtonReleased()) {
+            Robot.shooterSystem.stopIntake();
         }
     }
 
-    void wheelStopDrift() {
-        if (Robot.m_oi.xbox.getXButtonPressed()){
-            Robot.driveSystem.toggleOmniDrift();
+    void shootControl() {
+        if (Robot.m_oi.xbox.getTriggerAxis(GenericHID.Hand.kRight) > 0.5) {
+            Robot.shooterSystem.shoot();
+            Timer.delay(0.25);
+            Robot.shooterSystem.intakeShoot();
+        }
+
+        else if (Robot.m_oi.xbox.getTriggerAxis(GenericHID.Hand.kRight) < 0.5) {
+            Robot.shooterSystem.stopShoot();
         }
     }
+
+    void reverseShootControl() {
+        if (Robot.m_oi.xbox.getBButton()) {
+            Robot.shooterSystem.reverse();
+        }
+
+        else if (Robot.m_oi.xbox.getBButtonReleased()) {
+            Robot.shooterSystem.stopIntake();
+        }
+    }
+
     /**
      * Ball shooter control
      */

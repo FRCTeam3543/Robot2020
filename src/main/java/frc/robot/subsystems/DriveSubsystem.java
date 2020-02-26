@@ -34,14 +34,6 @@ public class DriveSubsystem extends Subsystem {
 		else {
 			normal();
 		}
-
-		if (drift) {
-			driftOn();
-		}
-
-		else {
-			driftOff();
-		}
 	}
 	
 	private AnalogGyro gyro = new AnalogGyro(Config.GYRO_PORT);
@@ -107,14 +99,6 @@ public class DriveSubsystem extends Subsystem {
 		RightSide.setInverted(false);
 	}
 
-	public void driftOn() {
-		rightFrontTalonSRX.setInverted(true);
-//		Try stopping with m_drive.stopMotor();
-	}
-
-	public void driftOff() {
-		rightFrontTalonSRX.setInverted(false);
-	}
 /**
    * When other commands aren't using the drivetrain, allow tank drive with
    * the joystick.
