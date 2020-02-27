@@ -18,13 +18,6 @@ import frc.robot.subsystems.Config;
  */
 public class OI {
 
-    public static final int JOYSTICK_ELEVATOR_UP = 6;
-    public static final int JOYSTICK_ELEVATOR_DOWN = 4;
-    public static final int JOYSTICK_BALL_INTAKE = 2;
-    public static final int JOYSTICK_RAMP_DEPLOY_1 = 11;
-    public static final int JOYSTICK_RAMP_DEPLOY_2 = 12;
-
-
     public XboxController xbox = new XboxController(Config.XBOX_PORT);
 //	public Joystick joystick = new Joystick(Config.JOYSTICK_PORT);
 
@@ -76,14 +69,10 @@ public class OI {
      */
 	void elevatorControl()
 	{
-        if(xbox.getBumper(GenericHID.Hand.kRight)
-//                || joystick.getRawButton(JOYSTICK_ELEVATOR_UP)
-        ){
+        if(xbox.getBumper(GenericHID.Hand.kRight)){
             Robot.elevator.goUp();
         }
-        else if (Robot.m_oi.xbox.getBumper(GenericHID.Hand.kLeft)
-//                || joystick.getRawButton(JOYSTICK_ELEVATOR_DOWN)
-        ){
+        else if (Robot.m_oi.xbox.getBumper(GenericHID.Hand.kLeft)){
             Robot.elevator.goDown();
         }
         else {
@@ -139,18 +128,4 @@ public class OI {
         }
     }
 
-    /**
-     * Ball shooter control
-     */
-    public boolean getJoystickButton(int num)
-    {
-        return false;
-//        return joystick.getRawButton(num);
-    }
-
-    public boolean getTrigger()
-    {
-        return false;
-//        return joystick.getTrigger();
-    }
 }

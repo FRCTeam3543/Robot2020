@@ -39,7 +39,6 @@ public class Robot extends TimedRobot {
   public static final DistanceSensor distanceSensor = new DistanceSensor();
   public static final OmniWheels omniSwitch = new OmniWheels();
   public static final Shooter shooterSystem = new Shooter();
-  public static final CameraSubsystem cameraVision = new CameraSubsystem();
   
 
   public static Config config = new Config();
@@ -73,10 +72,8 @@ public class Robot extends TimedRobot {
     m_autoChooser = new SendableChooser<Command>();
 
     initOperatorInterface();
-   // lifty.reset();
     driveSystem.calibrate();
     driveSystem.reset();
-    cameraVision.initCameraThread();
   }
 
   @Override
@@ -87,7 +84,6 @@ public class Robot extends TimedRobot {
 
   @Override
   protected void finalize() {
-    cameraVision.stopCameraThread();
     super.finalize();
   }
 
@@ -118,7 +114,10 @@ public class Robot extends TimedRobot {
     omniSwitch.periodic();
     elevator.periodic();
 
-    if (m_oi.xbox.getXButtonPressed()) {
+    m_oi.arcadeDrive();
+
+    // Implement if line following is required
+    /*if (m_oi.xbox.getXButtonPressed()) {
       lineFollowing = !lineFollowing;
       SmartDashboard.putBoolean("Line following", lineFollowing);
     }
@@ -127,7 +126,7 @@ public class Robot extends TimedRobot {
     }
     else {
       m_oi.arcadeDrive();
-    }
+    } */
 
     Scheduler.getInstance().run();
     updateOperatorInterface();
@@ -157,7 +156,6 @@ public class Robot extends TimedRobot {
 
   void reset() {
     driveSystem.reset();
-   // lifty.reset();
   }
   /**
    * Add stuff to the OI

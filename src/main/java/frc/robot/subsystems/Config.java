@@ -19,7 +19,7 @@ public class Config {
     public static final int CAMERA_HEIGHT = 240;
     
     ///Elevator (Temp)///
-    public static final int ELEVATOR_MOTOR_PORT = 7; 
+    public static final int ELEVATOR_MOTOR_PORT = 8; 
     public static final double ELEVATOR_MOTOR_SPEED_UP = 1;
     public static final double ELEVATOR_MOTOR_STAY = 0.1;
     public static final double ELEVATOR_MOTOR_SPEED_DOWN = -0.5;
@@ -49,14 +49,13 @@ public class Config {
     ///////////////////////////////////
     ///////// Omni Wheel Pneumatics /////////
     ///////////////////////////////////
-    public static final int OMNI_PORT_1 = 2;
-    public static final int OMNI_PORT_2 = 3;    
+    public static final int OMNI_PORT_1 = 0;
+    public static final int OMNI_PORT_2 = 1;    
 
     public static final double DRIVE_LEFT_QUAD_DPP = 0.00003844376;    // meters per pulse, measured 2/9/19
     public static final double DRIVE_RIGHT_QUAD_DPP = -DRIVE_LEFT_QUAD_DPP;
 
     // Digital Ports
-    public static final int BALL_PICKUP_SWITCH_PORT = 1;
     public static final int LINE_SENSOR_LEFT = 2;
     public static final int LINE_SENSOR_RIGHT = 3;
 
@@ -76,15 +75,7 @@ public class Config {
     public static final int ULTRASOUND_LEFT = 1;
     public static final int ULTRASOUND_RIGHT = 2;
 
-	// OI Buttons etc
-    public static final int BALL_PICKUP_TOGGLE_BUTTON               = 1;
-
     //PID's
-    public static final double BALL_PICKUP_PID_KP = 1.5708;  // based on full output at pi/2 error
-    public static final double BALL_PICKUP_PID_KI = 0.0;
-    public static final double BALL_PICKUP_PID_KD = 0.0;
-    public static final double BALL_PICKUP_ENCODER_DPP = 1 / 162974.66; // radians per pulse (4096 pulses per cycle and gear ratio of 250)
-
     public static final double THROTTLE_MIN = 0.7;
     public static final double RUMBLE_VALUE = 0.7;
 }

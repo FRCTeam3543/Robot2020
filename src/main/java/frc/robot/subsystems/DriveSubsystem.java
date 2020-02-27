@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 public class DriveSubsystem extends Subsystem {
 	
 	boolean directionFlip = false;
-	boolean drift = false;
 
 	@Override
     public void periodic() {
@@ -84,11 +83,6 @@ public class DriveSubsystem extends Subsystem {
 		directionFlip = !directionFlip;
 	}
 
-	//Not currently functioning
-	public void toggleOmniDrift() {
-		drift = !drift;
-	}
-
 	public void invert() {
 		LeftSide.setInverted(true);
 		RightSide.setInverted(true);
@@ -120,8 +114,8 @@ public class DriveSubsystem extends Subsystem {
   /**
    * Stop the drivetrain from moving.
    */
-  public void stop() {
-	m_drive.stopMotor();
+	public void stop() {
+		m_drive.stopMotor();
 	}
 
 	public void reset() {
