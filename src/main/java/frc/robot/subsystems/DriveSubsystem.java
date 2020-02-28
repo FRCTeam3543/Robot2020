@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 public class DriveSubsystem extends Subsystem {
 	
 	boolean directionFlip = false;
-	boolean drift = false;
 
 	@Override
     public void periodic() {
@@ -30,33 +29,22 @@ public class DriveSubsystem extends Subsystem {
         if (directionFlip) {
 			invert();
 		}
-
 		else {
 			normal();
-		}
-
-		if (drift) {
-			driftOn();
-		}
-
-		else {
-			driftOff();
 		}
 	}
 	
 	private AnalogGyro gyro = new AnalogGyro(Config.GYRO_PORT);
 
-	/**
-	 * Subsystem Devices
-	 */
+	//Subsystem Devices
 	////////LEFT////////
 	WPI_TalonSRX leftFrontTalonSRX = new WPI_TalonSRX(Config.DRIVELINE_LEFT_FRONT_MOTOR_PORT);
 	WPI_TalonSRX leftRearTalonSRX = new WPI_TalonSRX(Config.DRIVELINE_LEFT_REAR_MOTOR_PORT);
 	////////Right////////
 	WPI_TalonSRX rightFrontTalonSRX = new WPI_TalonSRX(Config.DRIVELINE_RIGHT_FRONT_MOTOR_PORT);
 	WPI_TalonSRX rightRearTalonSRX = new WPI_TalonSRX(Config.DRIVELINE_RIGHT_REAR_MOTOR_PORT);
-
-	////////////////////
+	
+	//////////////
 	//////  Group //////
 	////////////////////
 	private final SpeedControllerGroup LeftSide = new SpeedControllerGroup(leftFrontTalonSRX, leftRearTalonSRX);
@@ -87,14 +75,9 @@ public class DriveSubsystem extends Subsystem {
 		SendableRegistry.setName(RightSide, "Right Wheels");
 		reset();
 	}
-	
+
 	public void toggleDriveFlip() {
 		directionFlip = !directionFlip;
-	}
-
-	//Not currently functioning
-	public void toggleOmniDrift() {
-		drift = !drift;
 	}
 
 	public void invert() {
@@ -107,14 +90,6 @@ public class DriveSubsystem extends Subsystem {
 		RightSide.setInverted(false);
 	}
 
-	public void driftOn() {
-		rightFrontTalonSRX.setInverted(true);
-//		Try stopping with m_drive.stopMotor();
-	}
-
-	public void driftOff() {
-		rightFrontTalonSRX.setInverted(false);
-	}
 /**
    * When other commands aren't using the drivetrain, allow tank drive with
    * the joystick.
@@ -136,8 +111,8 @@ public class DriveSubsystem extends Subsystem {
   /**
    * Stop the drivetrain from moving.
    */
-  public void stop() {
-	m_drive.stopMotor();
+	public void stop() {
+		m_drive.stopMotor();
 	}
 
 	public void reset() {
@@ -166,13 +141,5 @@ public class DriveSubsystem extends Subsystem {
 		addChild(RightSide);
 		SendableRegistry.addChild(LeftSide, leftFrontTalonSRX.getSensorCollection());
 		SendableRegistry.addChild(RightSide, rightFrontTalonSRX.getSensorCollection());
-	}
-
-	public double getLeftQuadPosition() {
-  		return leftFrontTalonSRX.getSensorCollection().getQuadraturePosition() * Config.DRIVE_LEFT_QUAD_DPP;
-	}
-
-	public double getRightQuadPosition() {
-  		return rightFrontTalonSRX.getSensorCollection().getQuadraturePosition() * Config.DRIVE_RIGHT_QUAD_DPP;
 	}
 }
