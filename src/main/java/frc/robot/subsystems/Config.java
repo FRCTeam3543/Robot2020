@@ -55,9 +55,13 @@ public class Config {
     public static final double DRIVE_LEFT_QUAD_DPP = 0.00003844376;    // meters per pulse, measured 2/9/19
     public static final double DRIVE_RIGHT_QUAD_DPP = -DRIVE_LEFT_QUAD_DPP;
 
-    // Digital Ports
-    public static final int LINE_SENSOR_LEFT = 2;
-    public static final int LINE_SENSOR_RIGHT = 3;
+    //Digital Ports//
+    public static final int ENCODER1_CHANNEL_A = 1;
+    public static final int ENCODER1_CHANNEL_B = 2;
+    public static final int ENCODER2_CHANNEL_A = 4;
+    public static final int ENCODER2_CHANNEL_B = 5;
+    public static final int LINE_SENSOR_LEFT = 8;
+    public static final int LINE_SENSOR_RIGHT = 9;
 
     // PCM Channels
     public static final int COMPRESSOR_PORT 						= 5;

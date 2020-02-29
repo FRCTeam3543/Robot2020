@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This is the drive subsystem (Motor Controllers and such)
@@ -36,11 +37,11 @@ public class DriveSubsystem extends Subsystem {
 		}
 
 		if (motorSpeed) {
-			speedUp();
+			speedDown();
 		}
 
 		else {
-			speedDown();
+			speedUp();
 		}
 	}
 
@@ -108,12 +109,21 @@ public class DriveSubsystem extends Subsystem {
 		motorSpeed = !motorSpeed;
 	}
 
-	public void speedUp() {
-		Config.MOTOR_TRIM = 0.75;
+	public void defaultSpeedStatus() {
+		SmartDashboard.setDefaultBoolean("Ludicrous Speed", false);
+		SmartDashboard.setDefaultBoolean("Precision Speed", false);
 	}
 
 	public void speedDown() {
+		Config.MOTOR_TRIM = 0.75;
+		SmartDashboard.putBoolean("Ludicrous Speed", false);
+		SmartDashboard.putBoolean("Precision Speed", true);
+	}
+
+	public void speedUp() {
 		Config.MOTOR_TRIM = 3;
+		SmartDashboard.putBoolean("Ludicrous Speed", true);
+		SmartDashboard.putBoolean("Precision Speed", false);
 	}	
 
 /**

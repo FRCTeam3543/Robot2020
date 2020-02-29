@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
 public class Shooter extends Subsystem {
     //SHOOTER//
@@ -44,6 +45,9 @@ public class Shooter extends Subsystem {
        topIntake.stopMotor();
        topShooter.set(0);
        bottomShooter.set(0);
+
+       Robot.m_encoder.reset();
+       Robot.m_encoder2.reset();
    }
 
    public void stopIntake() {
