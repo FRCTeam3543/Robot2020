@@ -10,6 +10,8 @@ package frc.robot;
 import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -33,6 +35,9 @@ public class Robot extends TimedRobot {
   /**
   * Instantiation of subsystems
   */
+  public final Encoder m_encoder = new Encoder(1, 2, true, CounterBase.EncodingType.k4X);
+  public final Encoder m_encoder2 = new Encoder(3, 4, true, CounterBase.EncodingType.k4X);
+
   public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
   public static final DriveSubsystem driveSystem = new DriveSubsystem(); // manages driveline sensors and acutators
   public static final LineSensor lineSensor = new LineSensor();
@@ -74,6 +79,12 @@ public class Robot extends TimedRobot {
     initOperatorInterface();
     driveSystem.calibrate();
     driveSystem.reset();
+    m_encoder.setSamplesToAverage(5);
+    m_encoder.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
+    m_encoder.setMinRate(1.0);
+    m_encoder2.setSamplesToAverage(5);
+    m_encoder2.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
+    m_encoder2.setMinRate(1.0);
   }
 
   @Override
@@ -230,6 +241,10 @@ public class Robot extends TimedRobot {
   }
 
   void updateOperatorInterface() {
+    SmartDashboard.putNumber("Encoder Distance", m_encoder.getDistance());
+    SmartDashboard.putNumber("Encoder Rate", m_encoder.getRate());
+    SmartDashboard.putNumber("Encoder Distance", m_encoder2.getDistance());
+    SmartDashboard.putNumber("Encoder Rate", m_encoder2.getRate());
     SmartDashboard.putNumber("Left Quad", driveSystem.getLeftQuadPosition());
     SmartDashboard.putNumber("Right Quad", driveSystem.getRightQuadPosition());
   }
