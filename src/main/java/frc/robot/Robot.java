@@ -200,10 +200,6 @@ public class Robot extends TimedRobot {
     }
   }
 
-//  void arcadeDrive() {
-//      arcadeDrive(m_oi.xbox.getRawAxis(1), -m_oi.xbox.getRawAxis(0));
-//  }
-
   static void arcadeDrive(double mag, double turn, boolean squareInputs) {
     // for some reason this is inverted
     if ((mag > -0.2) & (mag < 0.2)) {

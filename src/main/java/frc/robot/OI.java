@@ -28,7 +28,8 @@ public class OI {
 
 	void loop() {
 		checkReset();
-		elevatorControl();
+        elevatorControl();
+        wheelSpeed();
         omniControl();
         //wheelFlip();
         intakeControl();
@@ -37,7 +38,7 @@ public class OI {
 	}
 
 	void checkReset() {
-        if (xbox.getYButtonPressed()) {
+        if (xbox.getStartButtonPressed()) {
             Robot.driveSystem.reset();
         }
     }
@@ -80,6 +81,13 @@ public class OI {
         }
 	}
 
+    //Change Wheel Speed//
+    void wheelSpeed() {
+        if (Robot.m_oi.xbox.getStickButtonPressed(GenericHID.Hand.kRight)) {
+            Robot.driveSystem.toggleSpeed();
+        }
+    }
+
     //Omni Controls//
     void omniControl() {
         if (Robot.m_oi.xbox.getAButtonPressed()) {
@@ -109,7 +117,7 @@ public class OI {
     void shootControl() {
         if (Robot.m_oi.xbox.getTriggerAxis(GenericHID.Hand.kRight) > 0.5) {
             Robot.shooterSystem.shoot();
-            Timer.delay(0.25);
+            Timer.delay(0.5);
             Robot.shooterSystem.intakeShoot();
         }
 

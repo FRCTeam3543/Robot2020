@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 public class DriveSubsystem extends Subsystem {
 	
 	boolean directionFlip = false;
+	boolean motorSpeed = false;
 
 	@Override
     public void periodic() {
@@ -33,8 +34,17 @@ public class DriveSubsystem extends Subsystem {
 		else {
 			normal();
 		}
+
+		if (motorSpeed) {
+			speedUp();
+		}
+
+		else {
+			speedDown();
+		}
 	}
-	
+
+
 	private AnalogGyro gyro = new AnalogGyro(Config.GYRO_PORT);
 
 	/**
@@ -92,6 +102,19 @@ public class DriveSubsystem extends Subsystem {
 		LeftSide.setInverted(false);
 		RightSide.setInverted(false);
 	}
+
+
+	public void toggleSpeed() {
+		motorSpeed = !motorSpeed;
+	}
+
+	public void speedUp() {
+		Config.MOTOR_TRIM = 0.75;
+	}
+
+	public void speedDown() {
+		Config.MOTOR_TRIM = 3;
+	}	
 
 /**
    * When other commands aren't using the drivetrain, allow tank drive with

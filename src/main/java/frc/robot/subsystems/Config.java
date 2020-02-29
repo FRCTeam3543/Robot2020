@@ -30,7 +30,7 @@ public class Config {
     public static final int DRIVELINE_RIGHT_FRONT_MOTOR_PORT 		= 6;
     public static final int DRIVELINE_RIGHT_REAR_MOTOR_PORT 		= 7;
 
-    public static final double MOTOR_TRIM = 0.75;
+    public static double MOTOR_TRIM = 0.75;
 
     // Shooter Motor Ports//
     public static final int SHOOTER_TOP_MOTOR_PORT = 9; 
@@ -44,7 +44,7 @@ public class Config {
     //Ball Intake Ports //
     public static final int INTAKE_TOP_MOTOR_PORT = 10;
     public static final int INTAKE_BOTTOM_MOTOR_PORT = 5;
-    public static final double INTAKE_MOTOR_SPEED_UP = 0.7;
+    public static final double INTAKE_MOTOR_SPEED_UP = 0.8;
 
     ///////////////////////////////////
     ///////// Omni Wheel Pneumatics /////////
