@@ -206,6 +206,21 @@ public class Robot extends TimedRobot {
 
   static void arcadeDrive(double mag, double turn, boolean squareInputs) {
     // for some reason this is inverted
+    if ((mag > -0.2) & (mag < 0.2)) {
+			mag = 0;
+		}
+
+		else {
+			
+		}
+
+		if ((turn > -0.2) & (turn < 0.2)) {
+			turn = 0;
+		}
+
+		else {
+			
+		}
     driveSystem.arcadeDrive(mag, turn, squareInputs);
   }
 
