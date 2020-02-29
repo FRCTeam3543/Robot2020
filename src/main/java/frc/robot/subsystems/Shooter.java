@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends Subsystem {
-    
     //SHOOTER//
     WPI_TalonSRX topShooter = new WPI_TalonSRX(Config.SHOOTER_TOP_MOTOR_PORT);
     WPI_TalonSRX bottomShooter = new WPI_TalonSRX(Config.SHOOTER_BOTTOM_MOTOR_PORT);

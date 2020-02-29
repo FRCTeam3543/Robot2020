@@ -1,10 +1,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class OmniStuff extends Subsystem {
+public class OmniWheels extends Subsystem {
     DoubleSolenoid doubleSolenoid = new DoubleSolenoid(Config.OMNI_PORT_1, Config.OMNI_PORT_2);
     
     boolean isUp = false;
@@ -29,12 +30,12 @@ public class OmniStuff extends Subsystem {
 
     public void open() {
         doubleSolenoid.set(Value.kForward);
-        
+        Timer.delay(0.05);
     }
 
     public void close() {
         doubleSolenoid.set(Value.kReverse);
-        
+        Timer.delay(0.05);
     }
 
     @Override

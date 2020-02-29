@@ -7,16 +7,15 @@
 
 package frc.robot;
 
+import java.util.logging.Logger;
+
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.CounterBase;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveWithXbox;
 import frc.robot.subsystems.*;
 
 /*
@@ -27,18 +26,24 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static final Logger LOGGER = Logger.getLogger("Robot");
+
   // public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
 
   /**
   * Instantiation of subsystems
   */
-  public static final DriveWithXbox contorl = new DriveWithXbox(); 
+  public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
   public static final DriveSubsystem driveSystem = new DriveSubsystem(); // manages driveline sensors and acutators
-  public static final OmniStuff omniSwitch = new OmniStuff();
+  public static final LineSensor lineSensor = new LineSensor();
+  public static final DistanceSensor distanceSensor = new DistanceSensor();
+  public static final OmniWheels omniSwitch = new OmniWheels();
   public static final Shooter shooterSystem = new Shooter();
-  public final Encoder m_encoder = new Encoder(1, 2, true, CounterBase.EncodingType.k4X);
+  
+
   public static Config config = new Config();
   public static OI m_oi;
+
   public static State state = new State();
 
 
@@ -65,12 +70,10 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
     // instantiate the command used for the autonomous period
     m_autoChooser = new SendableChooser<Command>();
+
     initOperatorInterface();
     driveSystem.calibrate();
     driveSystem.reset();
-    m_encoder.setSamplesToAverage(5);
-    m_encoder.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    m_encoder.setMinRate(1.0);
   }
 
   @Override
@@ -102,12 +105,29 @@ public class Robot extends TimedRobot {
     Robot.shooterSystem.shuffleBoard();
   }
 
+  boolean lineFollowing = false;
   // This function is called periodically during operator control
   @Override
   public void teleopPeriodic() {
     updateState();
     m_oi.loop();
     omniSwitch.periodic();
+    elevator.periodic();
+
+    m_oi.arcadeDrive();
+
+    // Implement if line following is required
+    /*if (m_oi.xbox.getXButtonPressed()) {
+      lineFollowing = !lineFollowing;
+      SmartDashboard.putBoolean("Line following", lineFollowing);
+    }
+    if (lineFollowing) {
+      followLine();
+    }
+    else {
+      m_oi.arcadeDrive();
+    } */
+
     Scheduler.getInstance().run();
     updateOperatorInterface();
     LiveWindow.updateValues();
@@ -142,10 +162,75 @@ public class Robot extends TimedRobot {
    */
   void initOperatorInterface() {
     driveSystem.initOperatorInterface();
+    lineSensor.initOperatorInterface();
+    distanceSensor.initOperatorInterface();
+  }
+
+  /**
+   * Basic line following.
+   *
+   * Read the line sensors.  If no sensors active, stop.
+   *
+   * If at least one active, attempt to follow the line, using the speed from the controller.
+   */
+  void followLine() {
+    if (lineSensor.isEitherEnabled()) {
+      // if left is on and right is not, turn left
+      double mag = m_oi.xbox.getRawAxis(1);
+      mag = Math.max(0.6, mag);
+      mag = Math.min(0.4, mag);
+
+      mag = -0.5;
+      double turnSpeed = 0.2;
+
+      double turn = 0;
+      if (lineSensor.isBothEnabled()) {
+        // turn = 0
+      }
+      if (lineSensor.isLeftEnabled()) { // turn to left
+          turn = -turnSpeed;
+      }
+      else if (lineSensor.isRightEnabled()) { // turn to right
+          turn = turnSpeed;
+      }
+      arcadeDrive(mag, turn);
+    }
+    else { // just arcade drive
+      m_oi.arcadeDrive();
+    }
+  }
+
+//  void arcadeDrive() {
+//      arcadeDrive(m_oi.xbox.getRawAxis(1), -m_oi.xbox.getRawAxis(0));
+//  }
+
+  static void arcadeDrive(double mag, double turn, boolean squareInputs) {
+    // for some reason this is inverted
+    if ((mag > -0.2) & (mag < 0.2)) {
+			mag = 0;
+		}
+
+		else {
+			
+		}
+
+		if ((turn > -0.2) & (turn < 0.2)) {
+			turn = 0;
+		}
+
+		else {
+			
+		}
+    driveSystem.arcadeDrive(mag, turn, squareInputs);
+  }
+
+  static void arcadeDrive(double mag, double turn) {
+    // for some reason this is inverted
+    arcadeDrive(mag, turn, true);
   }
 
   void updateOperatorInterface() {
-    SmartDashboard.putNumber("Encoder Distance", m_encoder.getDistance());
-    SmartDashboard.putNumber("Encoder Rate", m_encoder.getRate());
+    SmartDashboard.putNumber("Left Quad", driveSystem.getLeftQuadPosition());
+    SmartDashboard.putNumber("Right Quad", driveSystem.getRightQuadPosition());
   }
 }

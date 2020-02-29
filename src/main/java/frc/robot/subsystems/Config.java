@@ -17,6 +17,12 @@ public class Config {
     public static final String CAMERA_ADDRESS = "10.35.43.11";
     public static final int CAMERA_WIDTH = 320;
     public static final int CAMERA_HEIGHT = 240;
+    
+    ///Elevator (Temp)///
+    public static final int ELEVATOR_MOTOR_PORT = 8; 
+    public static final double ELEVATOR_MOTOR_SPEED_UP = 1;
+    public static final double ELEVATOR_MOTOR_STAY = 0.1;
+    public static final double ELEVATOR_MOTOR_SPEED_DOWN = -0.5;
 
     ///// Drivetrain Motor Ports /////////
     public static final int DRIVELINE_LEFT_FRONT_MOTOR_PORT 		= 1;
@@ -40,9 +46,18 @@ public class Config {
     public static final int INTAKE_BOTTOM_MOTOR_PORT = 5;
     public static final double INTAKE_MOTOR_SPEED_UP = 0.7;
 
-    // Omni Wheel Pneumatics //
+    ///////////////////////////////////
+    ///////// Omni Wheel Pneumatics /////////
+    ///////////////////////////////////
     public static final int OMNI_PORT_1 = 0;
-    public static final int OMNI_PORT_2 = 1;
+    public static final int OMNI_PORT_2 = 1;    
+
+    public static final double DRIVE_LEFT_QUAD_DPP = 0.00003844376;    // meters per pulse, measured 2/9/19
+    public static final double DRIVE_RIGHT_QUAD_DPP = -DRIVE_LEFT_QUAD_DPP;
+
+    // Digital Ports
+    public static final int LINE_SENSOR_LEFT = 2;
+    public static final int LINE_SENSOR_RIGHT = 3;
 
     // PCM Channels
     public static final int COMPRESSOR_PORT 						= 5;
@@ -62,6 +77,5 @@ public class Config {
 
     //PID's
     public static final double THROTTLE_MIN = 0.7;
-
-
+    public static final double RUMBLE_VALUE = 0.7;
 }

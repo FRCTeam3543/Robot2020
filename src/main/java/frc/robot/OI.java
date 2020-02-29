@@ -28,6 +28,7 @@ public class OI {
 
 	void loop() {
 		checkReset();
+		elevatorControl();
         omniControl();
         //wheelFlip();
         intakeControl();
@@ -41,6 +42,44 @@ public class OI {
         }
     }
 
+	/**
+	 * Make the controller rumble
+	 */
+	void rumble() {
+		xbox.setRumble(GenericHID.RumbleType.kLeftRumble, Config.RUMBLE_VALUE);
+	}
+
+	void arcadeDrive() {
+		// tricky
+		double mag = xbox.getRawAxis(1);
+        double turn =  - xbox.getRawAxis(0); // needs to be backward
+        if (Math.abs(turn) < 0.05) { // +/- 5% rounds to zero
+            turn = 0;
+        }
+		double throttle = 1 - Math.abs(xbox.getRawAxis(5)); // 0 to 1
+		throttle = throttle * (1 - Config.THROTTLE_MIN) + Config.THROTTLE_MIN;
+		// adjust magnitude and turn by the throttle value
+        double throttleMult = 1; // 1.5
+        double throttleOffset = 0.2;
+		Robot.arcadeDrive(mag * throttle,  turn * throttle * throttleMult + throttleOffset, false);
+	}
+
+    /**
+     * Controls the elevator lift with the xbox bumpers OR Joystick up/down
+     */
+	void elevatorControl()
+	{
+        if(xbox.getBumper(GenericHID.Hand.kRight)){
+            Robot.elevator.goUp();
+        }
+        else if (Robot.m_oi.xbox.getBumper(GenericHID.Hand.kLeft)){
+            Robot.elevator.goDown();
+        }
+        else {
+            Robot.elevator.stay();
+        }
+	}
+
     //Omni Controls//
     void omniControl() {
         if (Robot.m_oi.xbox.getAButtonPressed()) {
@@ -48,7 +87,15 @@ public class OI {
         }
     }
 
+/* Temporarily disabled
+    void wheelFlip() {
+        if (Robot.m_oi.xbox.getBButtonPressed()) {
+            Robot.driveSystem.toggleDriveFlip();
+        }
+    }*/
+
     //Shooting Controls//
+    
     void intakeControl() {
         if (Robot.m_oi.xbox.getXButton()) {
             Robot.shooterSystem.intake();
@@ -80,7 +127,5 @@ public class OI {
             Robot.shooterSystem.stopIntake();
         }
     }
-
-
 
 }

@@ -32,7 +32,6 @@ public class DriveWithXbox extends Command {
 		Robot.driveSystem.arcadeDrive(xbox.getRawAxis(1), xbox.getRawAxis(0), true);
   }
 
-
   @Override
   protected boolean isFinished() {
     return false;
