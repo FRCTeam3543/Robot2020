@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.subsystems.Config;
 
 /**
@@ -48,7 +49,7 @@ public class OI {
 	 */
 	void rumble() {
 		xbox.setRumble(GenericHID.RumbleType.kLeftRumble, Config.RUMBLE_VALUE);
-	}
+    }
 
 	void arcadeDrive() {
 		// tricky
@@ -62,7 +63,14 @@ public class OI {
 		// adjust magnitude and turn by the throttle value
         double throttleMult = 1; // 1.5
         double throttleOffset = 0.2;
-		Robot.arcadeDrive(mag * throttle,  turn * throttle * throttleMult + throttleOffset, false);
+        // IF the Y button is pressed, we want to drive straight.  Otherwise we want
+        // to turn.
+        if (xbox.getYButton()) {
+            Robot.driveStraight(mag * throttle);
+        }
+        else {
+            Robot.arcadeDrive(mag * throttle,  turn * throttle * throttleMult + throttleOffset, false);
+        }
 	}
 
     /**
@@ -103,7 +111,7 @@ public class OI {
     }*/
 
     //Shooting Controls//
-    
+
     void intakeControl() {
         if (Robot.m_oi.xbox.getXButton()) {
             Robot.shooterSystem.intake();

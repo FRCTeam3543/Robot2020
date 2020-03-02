@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -38,14 +39,16 @@ public class Robot extends TimedRobot {
   public static final Encoder m_encoder = new Encoder(Config.ENCODER1_CHANNEL_A, Config.ENCODER1_CHANNEL_B, false, CounterBase.EncodingType.k4X);
   public static Encoder m_encoder2 = new Encoder(Config.ENCODER2_CHANNEL_A, Config.ENCODER2_CHANNEL_B, true, CounterBase.EncodingType.k4X);
 
-  
+
   public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
   public static final DriveSubsystem driveSystem = new DriveSubsystem(); // manages driveline sensors and acutators
   public static final LineSensor lineSensor = new LineSensor();
   public static final DistanceSensor distanceSensor = new DistanceSensor();
   public static final OmniWheels omniSwitch = new OmniWheels();
   public static final Shooter shooterSystem = new Shooter();
-  
+
+  BallCamera ballCamera;
+  TargetCamera targetCamera = new TargetCamera();
 
   public static Config config = new Config();
   public static OI m_oi;
@@ -77,6 +80,9 @@ public class Robot extends TimedRobot {
     // instantiate the command used for the autonomous period
     m_autoChooser = new SendableChooser<Command>();
 
+    // create and start the ball detect camera
+    ballCamera = new BallCamera();
+
     initOperatorInterface();
     driveSystem.calibrate();
     driveSystem.reset();
@@ -86,10 +92,13 @@ public class Robot extends TimedRobot {
     m_encoder2.setSamplesToAverage(5);
     m_encoder2.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
     m_encoder2.setMinRate(1.0);
+
+    driveSystem.calibrate();
   }
 
   @Override
   public void autonomousInit() {
+    driveSystem.reset();
     m_autonomousCommand = (Command) m_autoChooser.getSelected();
     m_autonomousCommand.start();
   }
@@ -118,6 +127,7 @@ public class Robot extends TimedRobot {
     Robot.omniSwitch.defaultOmniStatus();
     m_encoder.reset();
     m_encoder2.reset();
+    driveSystem.reset(); // reset on teleop, to zero the gyro
   }
 
   boolean lineFollowing = false;
@@ -215,13 +225,18 @@ public class Robot extends TimedRobot {
     }
   }
 
+  static void driveStraight(double mag)
+  {
+    driveSystem.driveStraight(mag);
+  }
+
   static void arcadeDrive(double mag, double turn, boolean squareInputs) {
     if ((mag > -0.2) & (mag < 0.2)) {
 			mag = 0;
 		}
 
 		else {
-			
+
 		}
 
 		if ((turn > -0.2) & (turn < 0.2)) {
@@ -229,9 +244,9 @@ public class Robot extends TimedRobot {
 		}
 
 		else {
-			
+
     }
-    
+
     // This is inverted
     driveSystem.arcadeDrive(mag, turn, squareInputs);
   }
