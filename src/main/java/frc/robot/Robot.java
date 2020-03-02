@@ -48,7 +48,6 @@ public class Robot extends TimedRobot {
   public static final Shooter shooterSystem = new Shooter();
 
   BallCamera ballCamera;
-  TargetCamera targetCamera = new TargetCamera();
 
   public static Config config = new Config();
   public static OI m_oi;

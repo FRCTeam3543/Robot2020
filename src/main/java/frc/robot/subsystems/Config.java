@@ -37,6 +37,35 @@ public class Config {
     public static final int SHOOTER_BOTTOM_MOTOR_PORT = 4;
     public static final double SHOOTER_MOTOR_SPEED = 0.5;
 
+    // Shooter encoder ports //
+    public static final int SHOOTER_TOP_ENCODER_PORT_A = 0;  // TODO
+    public static final int SHOOTER_TOP_ENCODER_PORT_B = 0;  // TODO
+    public static final int SHOOTER_BOTTOM_ENCODER_PORT_A = 0;  // TODO
+    public static final int SHOOTER_BOTTOM_ENCODER_PORT_B = 0;  // TODO
+
+    // Shooter PID //
+    // args are kP, kI, kD, kF
+    public static final ShooterPID.PIDF SHOOTER_TOP_PIDF = new ShooterPID.PIDF(1.0, 0, 0, 0);
+    public static final ShooterPID.PIDF SHOOTER_BOTTOM_PIDF = SHOOTER_TOP_PIDF; // assume these are the same motor & encoder
+    public static final double SHOOTER_PID_TOLERANCE_PERCENT = 2; // this is the percent under which the PID is "on target"
+    // Shooter spin
+    // set this to bump the output of the bottom shooter motor
+    // should be greater than 1 for backspin, less than one for topspin
+    public static final double SHOOTER_BACKSPIN_FACTOR = 1.0;
+    public static final double SHOOTER_ANGLE_RADIANS = Math.PI / 4; // 45 degrees
+    // this is the distance from the vertical centerpoint between the top and bottom shooter motors
+    // and the center of the target
+    public static final double SHOOTER_TARGET_HEIGHT_ABOVE_MUZZLE = 1.5; // FIXME!
+    // this the velocity we shoot at if we don't know the target distance
+    public static final double SHOOTER_NOMINAL_VELOCITY = 0.6; // FIXME!
+    // this is the radius of the shooter wheel, in m
+    public static final double SHOOTER_WHEEL_RADIUS = 0.06; // FIXME!
+    // this is the max RPM of the encoders
+    public static final double SHOOTER_ENCODER_PULSES_PER_REV = 4000; // FIXME
+    public static final double SHOOTER_MOTOR_MAX_RPM = 3000; // FIXME
+    public static final double SHOOTER_MOTOR_MAX_RADIANS_PER_SEC = SHOOTER_MOTOR_MAX_RPM / (60 * Math.PI * 2);
+    public static final double SHOOTER_ENCODER_RADIANS_PER_PULSE = SHOOTER_ENCODER_PULSES_PER_REV / (Math.PI * 2);
+
     // Reverse Speed //
     public static final double SHOOTER_MOTOR_SPEED_REV = -0.4;
     public static final double INTAKE_MOTOR_SPEED_REV = -0.5;

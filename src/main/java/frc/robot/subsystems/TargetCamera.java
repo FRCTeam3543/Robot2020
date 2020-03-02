@@ -11,17 +11,38 @@ public class TargetCamera
 
     final NetworkTable networkTable;
 
+    public static final int SMOOTHING = 5;
+    // we track these as a moving average to smooth it
+    double rawDist = 0.0;
+    double ta = 0.0;
+    double dist = 0.0;
+
     public TargetCamera()
     {
         networkTable = NetworkTableInstance.getDefault().getTable("limelight");
     }
 
+    void update() {
+        ta = getTa();
+        rawDist = SLOPE * ta + INTERCEPT;
+        // moving average
+        dist = (dist * SMOOTHING + rawDist) / (SMOOTHING + 1);
+    }
+
+    double getTa()
+    {
+        return networkTable.getEntry("ta").getDouble(0.0);
+    }
+
     public double getTargetDistance()
     {
-        double ta = networkTable.getEntry("ta").getDouble(0.0);
+        return dist;
+    }
+
+    public void shuffleBoard()
+    {
         SmartDashboard.putNumber("Target ta", ta);
-        double distance = SLOPE * ta + INTERCEPT;
-        SmartDashboard.putNumber("Target Distance", distance);
-        return distance;
+        SmartDashboard.putNumber("Target Distance (Raw)", rawDist);
+        SmartDashboard.putNumber("Target Distance (Smoothed)", dist);
     }
 }
