@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * This is the drive subsystem (Motor Controllers and such)
  */
 public class DriveSubsystem extends Subsystem {
-	
+
 	boolean directionFlip = false;
 	boolean motorSpeed = false;
 
@@ -73,12 +73,12 @@ public class DriveSubsystem extends Subsystem {
 		setName("Drive Subsystem");
 
 		leftFrontTalonSRX.setNeutralMode(NeutralMode.Brake);
-		rightFrontTalonSRX.setNeutralMode(NeutralMode.Brake);	
+		rightFrontTalonSRX.setNeutralMode(NeutralMode.Brake);
 
 		m_drive = new DifferentialDrive(LeftSide, RightSide);
 
 		m_drive.setSafetyEnabled(false);
-		 
+
 
 		gyro.setSensitivity(Config.GYRO_SENSITIVITY);
 		gyro.calibrate();
@@ -89,7 +89,7 @@ public class DriveSubsystem extends Subsystem {
 		SendableRegistry.setName(RightSide, "Right Wheels");
 		reset();
 	}
-	
+
 	public void toggleDriveFlip() {
 		directionFlip = !directionFlip;
 	}
@@ -124,7 +124,7 @@ public class DriveSubsystem extends Subsystem {
 		Config.MOTOR_TRIM = 3;
 		SmartDashboard.putBoolean("Ludicrous Speed", true);
 		SmartDashboard.putBoolean("Precision Speed", false);
-	}	
+	}
 
 /**
    * When other commands aren't using the drivetrain, allow tank drive with
@@ -135,13 +135,23 @@ public class DriveSubsystem extends Subsystem {
 
   	/**
 	 * Get the value from the left stick
-	 * 
+	 *
 	 * @param xSpeed Left side values
 	 * @param zRotate
 	 */
 
 	public void arcadeDrive(double xSpeed, double zRotate, boolean squareInputs){
 		m_drive.arcadeDrive(xSpeed * Config.MOTOR_TRIM, zRotate * Config.MOTOR_TRIM, squareInputs);
+	}
+
+	/**
+	 * Drives straight by maintaining a heading
+	 *
+	 * @param speed
+	 */
+	public void driveStraight(double speed) {
+		double heading = gyro.getAngle() % 360;
+		arcadeDrive(speed, - heading * Config.GYRO_GAIN, false); // drive towards heading 0
 	}
 
   /**
