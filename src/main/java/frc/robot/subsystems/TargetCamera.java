@@ -6,8 +6,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TargetCamera
 {
-    static final double SLOPE = -1.55; //-9/8;
-    static final double INTERCEPT = 6.16; //91/16;
+    // static final double SLOPE = -1.55; //-9/8;
+    // static final double INTERCEPT = 6.16; //91/16;
+
+    static final double SLOPE = -1.25; //-9/8;
+    // static final double INTERCEPT = 6.19; //91/16;
+    static final double INTERCEPT = 5.5; //91/16;
 
     final NetworkTable networkTable;
 
@@ -22,9 +26,13 @@ public class TargetCamera
         networkTable = NetworkTableInstance.getDefault().getTable("limelight");
     }
 
-    void update() {
+    public void update() {
+
+        double slope = SmartDashboard.getNumber("Target slope", SLOPE);
+        double intercept = SmartDashboard.getNumber("Target intercept", INTERCEPT);
+
         ta = getTa();
-        rawDist = SLOPE * ta + INTERCEPT;
+        rawDist = slope * ta + intercept;
         // moving average
         dist = (dist * SMOOTHING + rawDist) / (SMOOTHING + 1);
     }
@@ -36,6 +44,7 @@ public class TargetCamera
 
     public double getTargetDistance()
     {
+        update();
         return dist;
     }
 

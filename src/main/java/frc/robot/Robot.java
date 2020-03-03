@@ -36,8 +36,8 @@ public class Robot extends TimedRobot {
   /**
   * Instantiation of subsystems
   */
-  public static final Encoder m_encoder = new Encoder(Config.ENCODER1_CHANNEL_A, Config.ENCODER1_CHANNEL_B, false, CounterBase.EncodingType.k4X);
-  public static Encoder m_encoder2 = new Encoder(Config.ENCODER2_CHANNEL_A, Config.ENCODER2_CHANNEL_B, true, CounterBase.EncodingType.k4X);
+  // public static final Encoder m_encoder = new Encoder(Config.ENCODER1_CHANNEL_A, Config.ENCODER1_CHANNEL_B, false, CounterBase.EncodingType.k4X);
+  // public static Encoder m_encoder2 = new Encoder(Config.ENCODER2_CHANNEL_A, Config.ENCODER2_CHANNEL_B, true, CounterBase.EncodingType.k4X);
 
 
   public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
   public static final Shooter shooterSystem = new Shooter();
 
   BallCamera ballCamera;
+  TargetCamera targetCamera = new TargetCamera();
 
   public static Config config = new Config();
   public static OI m_oi;
@@ -85,12 +86,12 @@ public class Robot extends TimedRobot {
     initOperatorInterface();
     driveSystem.calibrate();
     driveSystem.reset();
-    m_encoder.setSamplesToAverage(5);
-    m_encoder.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    m_encoder.setMinRate(1.0);
-    m_encoder2.setSamplesToAverage(5);
-    m_encoder2.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    m_encoder2.setMinRate(1.0);
+    // m_encoder.setSamplesToAverage(5);
+    // m_encoder.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
+    // m_encoder.setMinRate(1.0);
+    // m_encoder2.setSamplesToAverage(5);
+    // m_encoder2.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
+    // m_encoder2.setMinRate(1.0);
 
     driveSystem.calibrate();
   }
@@ -99,7 +100,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     driveSystem.reset();
     m_autonomousCommand = (Command) m_autoChooser.getSelected();
-    m_autonomousCommand.start();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.start();
+    }
   }
 
   @Override
@@ -124,8 +127,8 @@ public class Robot extends TimedRobot {
 
     Robot.shooterSystem.shuffleBoard();
     Robot.omniSwitch.defaultOmniStatus();
-    m_encoder.reset();
-    m_encoder2.reset();
+    // m_encoder.reset();
+    // m_encoder2.reset();
     driveSystem.reset(); // reset on teleop, to zero the gyro
   }
 
@@ -134,6 +137,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     updateState();
+    targetCamera.update();
     m_oi.loop();
     omniSwitch.periodic();
     elevator.periodic();
@@ -155,6 +159,12 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     updateOperatorInterface();
     LiveWindow.updateValues();
+  }
+
+  @Override
+  public void testInit()
+  {
+    teleopInit();
   }
 
   // This function called periodically during test mode
@@ -256,11 +266,14 @@ public class Robot extends TimedRobot {
   }
 
   void updateOperatorInterface() {
-    SmartDashboard.putNumber("Encoder 1 Distance", m_encoder.getDistance());
-    SmartDashboard.putNumber("Encoder 1 Rate", m_encoder.getRate());
-    SmartDashboard.putNumber("Encoder 2 Distance", m_encoder2.getDistance());
-    SmartDashboard.putNumber("Encoder 2 Rate", m_encoder2.getRate());
-    SmartDashboard.putNumber("Left Quad", driveSystem.getLeftQuadPosition());
-    SmartDashboard.putNumber("Right Quad", driveSystem.getRightQuadPosition());
+    shooterSystem.updateOperatorInterface();
+    targetCamera.shuffleBoard();
+    ballCamera.checkForBall();
+    // SmartDashboard.putNumber("Encoder 1 Distance", m_encoder.getDistance());
+    // SmartDashboard.putNumber("Encoder 1 Rate", m_encoder.getRate());
+    // SmartDashboard.putNumber("Encoder 2 Distance", m_encoder2.getDistance());
+    // SmartDashboard.putNumber("Encoder 2 Rate", m_encoder2.getRate());
+    // SmartDashboard.putNumber("Left Quad", driveSystem.getLeftQuadPosition());
+    // SmartDashboard.putNumber("Right Quad", driveSystem.getRightQuadPosition());
   }
 }

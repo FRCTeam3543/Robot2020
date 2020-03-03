@@ -62,6 +62,8 @@ public class BallCamera {
         SmartDashboard.putNumber("Max pixel val", maxVal);
 
         final boolean ret = percentage > areaThreshold;
+        SmartDashboard.putBoolean("Ball detected", ret);
+
         return ret;
     }
 

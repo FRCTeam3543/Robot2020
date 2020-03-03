@@ -122,13 +122,15 @@ public class OI {
     }
 
     void shootControl() {
-        if (Robot.m_oi.xbox.getTriggerAxis(GenericHID.Hand.kRight) > 0.5) {
+        if (Robot.m_oi.xbox.getTriggerAxis(GenericHID.Hand.kRight) >= 0.5) {
             Robot.shooterSystem.shoot();
-            Timer.delay(0.5);
-            Robot.shooterSystem.intakeShoot();
+            // Timer.delay(0.5);
+            // Robot.shooterSystem.intakeShoot();
         }
-
-        else if (Robot.m_oi.xbox.getTriggerAxis(GenericHID.Hand.kRight) < 0.5) {
+        // else if (Robot.m_oi.xbox.getTriggerAxis(GenericHID.Hand.kRight) < 0.5) {
+        //     Robot.shooterSystem.stopShoot();
+        // }
+        else {
             Robot.shooterSystem.stopShoot();
         }
     }

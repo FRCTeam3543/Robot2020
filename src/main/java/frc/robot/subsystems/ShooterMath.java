@@ -34,6 +34,7 @@ public class ShooterMath
     {
         try {
             double ret = Math.sqrt(G * Math.pow(d,2) / (2 * cosAngleSquared * ( d * sinOverCos - targetHeight)));
+            // SmartDashboard.putNumber("Raw muzzle velocity", ret);
             if (Double.isNaN(ret)) {
                 LOGGER.info("Bad square root, there isn't a shot (NaN)");
                 return 0.0;
