@@ -19,6 +19,8 @@ import frc.robot.subsystems.Config;
 public class OI {
 
     public XboxController xbox = new XboxController(Config.XBOX_PORT);
+    public XboxController xbox2 = new XboxController(Config.XBOX_2_PORT);
+
 //	public Joystick joystick = new Joystick(Config.JOYSTICK_PORT);
 
 	// Instantiaion of Xbox
@@ -28,7 +30,7 @@ public class OI {
 
 	void loop() {
 		checkReset();
-        // elevatorControl();
+        elevatorControl();
         wheelSpeed();
         omniControl();
         //wheelFlip();
@@ -80,14 +82,35 @@ public class OI {
      */
 	void elevatorControl()
 	{
-        if(xbox.getBumper(GenericHID.Hand.kRight)){
-            Robot.elevator.goUp();
+        boolean leftBumper = xbox2.getBumper(GenericHID.Hand.kLeft);
+        double leftTrigger = xbox2.getTriggerAxis(GenericHID.Hand.kLeft);
+        boolean rightBumper = xbox2.getBumper(GenericHID.Hand.kRight);
+        double rightTrigger = xbox2.getTriggerAxis(GenericHID.Hand.kRight);
+
+        if (xbox2.getAButton()) {
+            Robot.elevator.leftDownSlow();
         }
-        else if (Robot.m_oi.xbox.getBumper(GenericHID.Hand.kLeft)){
-            Robot.elevator.goDown();
+        else if (leftBumper){
+            Robot.elevator.leftUp();
+        }
+        else if (leftTrigger > 0.5) {
+            Robot.elevator.leftDown();
         }
         else {
-            Robot.elevator.stay();
+            Robot.elevator.leftStop();
+        }
+
+        if (xbox2.getBButton()) {
+            Robot.elevator.rightDownSlow();
+        }
+        else if (rightBumper){
+            Robot.elevator.rightUp();
+        }
+        else if (rightTrigger > 0.5) {
+            Robot.elevator.rightDown();
+        }
+        else {
+            Robot.elevator.rightStop();
         }
 	}
 

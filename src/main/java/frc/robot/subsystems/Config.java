@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 public class Config {
     ////// OPERATOR INTERFACE //////
     public static final int XBOX_PORT  = 0;
+    public static final int XBOX_2_PORT  = 1;
+
     public static final int JOYSTICK_PORT = 1;
 
     ////// VISION //////
@@ -27,7 +29,16 @@ public class Config {
     public static final int LINE_SENSOR_RIGHT = 9;
 
     ///Elevator (Temp)///
-    public static final int ELEVATOR_MOTOR_PORT = 8;
+    public static final int ELEVATOR_LEFT_MOTOR_PORT = 3;
+    public static final int ELEVATOR_RIGHT_MOTOR_PORT = 8;
+
+    public static final int ELEVATOR_LEFT_SWITCH_PORT = 6;
+    public static final int ELEVATOR_RIGHT_SWITCH_PORT = 7;
+
+    public static final double ELEVATOR_UP_SPEED = -0.9;
+    public static final double ELEVATOR_DOWN_SPEED = 1;
+    public static final double ELEVATOR_DOWN_SLOW_SPEED = 0.3;
+
     public static final double ELEVATOR_MOTOR_SPEED_UP = 1;
     public static final double ELEVATOR_MOTOR_STAY = 0.1;
     public static final double ELEVATOR_MOTOR_SPEED_DOWN = -0.5;
@@ -86,7 +97,7 @@ public class Config {
     public static final int INTAKE_TOP_MOTOR_PORT = 10;
     public static final int INTAKE_BOTTOM_MOTOR_PORT = 5;
     public static final double INTAKE_MOTOR_SPEED_UP = 0.8;
-    public static final double INTAKE_SHOOTER_MOTOR_SPEED_UP = 0.3;
+    public static final double INTAKE_SHOOTER_MOTOR_SPEED_UP = 0.45;
 
 
     ///////////////////////////////////
