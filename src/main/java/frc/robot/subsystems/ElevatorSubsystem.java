@@ -7,27 +7,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
 public class ElevatorSubsystem extends Subsystem{
-    
-    WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(Config.ELEVATOR_MOTOR_PORT); 
+
+    WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(Config.ELEVATOR_MOTOR_PORT);
 
     @Override
     protected void initDefaultCommand() {}
 
     public void periodic() {
         super.periodic();
-        elevateup();
     }
 
     public void elevateup() {
-        if(Robot.m_oi.xbox.getBumper(Hand.kRight)){
-            goUp();
-        }
-        else if(Robot.m_oi.xbox.getBumper(Hand.kLeft)){
-            goDown();
-        }
-        else{
-            stay();
-        }
+        // if(Robot.m_oi.xbox.getBumper(Hand.kRight)){
+        //     goUp();
+        // }
+        // else if(Robot.m_oi.xbox.getBumper(Hand.kLeft)){
+        //     goDown();
+        // }
+        // else{
+        //     stay();
+        // }
     }
 
     public void goUp() {

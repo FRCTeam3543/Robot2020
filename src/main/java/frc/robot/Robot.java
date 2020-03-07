@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
     // m_encoder2.setMinRate(1.0);
 
     driveSystem.calibrate();
+    targetCamera.init();
   }
 
   @Override
@@ -268,7 +269,7 @@ public class Robot extends TimedRobot {
   void updateOperatorInterface() {
     shooterSystem.updateOperatorInterface();
     targetCamera.shuffleBoard();
-    ballCamera.checkForBall();
+    // ballCamera.checkForBall();
     // SmartDashboard.putNumber("Encoder 1 Distance", m_encoder.getDistance());
     // SmartDashboard.putNumber("Encoder 1 Rate", m_encoder.getRate());
     // SmartDashboard.putNumber("Encoder 2 Distance", m_encoder2.getDistance());

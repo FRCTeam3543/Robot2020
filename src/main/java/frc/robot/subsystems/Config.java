@@ -54,7 +54,9 @@ public class Config {
 
     // Shooter PID //
     // args are kP, kI, kD, kF
-    public static final ShooterPID.PIDF SHOOTER_TOP_PIDF = new ShooterPID.PIDF(0.03, 0.00001, 0, 0);
+    // public static final ShooterPID.PIDF SHOOTER_TOP_PIDF = new ShooterPID.PIDF(0.03, 0.00012, 0, 0);
+    public static final ShooterPID.PIDF SHOOTER_TOP_PIDF = new ShooterPID.PIDF(0.032, 0.00015, 0, 0);
+
     public static final ShooterPID.PIDF SHOOTER_BOTTOM_PIDF = SHOOTER_TOP_PIDF; // assume these are the same motor & encoder
     public static final double SHOOTER_PID_TOLERANCE_PERCENT = 2; // this is the percent under which the PID is "on target"
     // Shooter spin
@@ -84,6 +86,8 @@ public class Config {
     public static final int INTAKE_TOP_MOTOR_PORT = 10;
     public static final int INTAKE_BOTTOM_MOTOR_PORT = 5;
     public static final double INTAKE_MOTOR_SPEED_UP = 0.8;
+    public static final double INTAKE_SHOOTER_MOTOR_SPEED_UP = 0.3;
+
 
     ///////////////////////////////////
     ///////// Omni Wheel Pneumatics /////////

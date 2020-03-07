@@ -20,13 +20,16 @@ public class Shooter extends Subsystem {
     Encoder topShooterEncoder = new Encoder(Config.SHOOTER_TOP_ENCODER_PORT_A, Config.SHOOTER_TOP_ENCODER_PORT_B);
     Encoder bottomShooterEncoder = new Encoder(Config.SHOOTER_BOTTOM_ENCODER_PORT_A, Config.SHOOTER_BOTTOM_ENCODER_PORT_B);
 
+    double backspinFactor = 1.0;
+    double topspinFactor = 1.0;
+
     PIDSubsystem topShooterPID = new ShooterPID("Top Shooter PID", Config.SHOOTER_TOP_PIDF,
         () -> topShooterEncoder.getRate() * -1,
-        (x) -> topShooter.set(trim(x))
+        (x) -> topShooter.set(trim(x * topspinFactor))
     );
     PIDSubsystem bottomShooterPID = new ShooterPID("Bottom Shooter PID", Config.SHOOTER_BOTTOM_PIDF,
         () -> bottomShooterEncoder.getRate(),
-        (x) -> bottomShooter.set(trim(x))
+        (x) -> bottomShooter.set(trim(x * backspinFactor))
     );
 
     ShooterMath shooterMath = new ShooterMath(Config.SHOOTER_ANGLE_RADIANS, Config.SHOOTER_TARGET_HEIGHT_ABOVE_MUZZLE);
@@ -42,8 +45,13 @@ public class Shooter extends Subsystem {
         bottomShooterEncoder.setSamplesToAverage(5);
         topShooterPID.setOutputRange(-1, 1);
         bottomShooterPID.setOutputRange(-1, 1);
+        topShooterPID.setPercentTolerance(5);
+        bottomShooterPID.setPercentTolerance(5);
         topShooterPID.disable();
         bottomShooterPID.disable();
+
+        SmartDashboard.putNumber("topspin", 1.0);
+        SmartDashboard.putNumber("backspin", 1.0);
     }
 
     double trim(double x) {
@@ -55,6 +63,13 @@ public class Shooter extends Subsystem {
         // updates the target distance on the shuffleboard
         targetCamera.shuffleBoard();
         // checkIfWaiting();
+        // backspinFactor = SmartDashboard.getNumber("backspin", 1.0);
+        // topspinFactor = SmartDashboard.getNumber("topspin", 1.0);
+    }
+
+    boolean pidOnTarget()
+    {
+        return topShooterPID.onTarget() && bottomShooterPID.onTarget();
     }
 
     public void shuffleBoard() {
@@ -62,7 +77,6 @@ public class Shooter extends Subsystem {
         SmartDashboard.setDefaultNumber("Bottom Motor", 0.7); // Update once calibrated
     }
 
-    double backspinFactor = Config.SHOOTER_BACKSPIN_FACTOR;
 
     public void shoot() {
         // topShooter.set(SmartDashboard.getNumber("Top Motor", topShooter.get()));
@@ -71,8 +85,8 @@ public class Shooter extends Subsystem {
         startShooting(getShooterMotorSpeedNeededToHitTarget());
     }
 
-    public void intakeShoot() {
-        shootIntake(SmartDashboard.getNumber("Shooter intake Speed", Config.INTAKE_MOTOR_SPEED_UP));
+    public void intakeShoot(boolean b) {
+        shootIntake(b ? SmartDashboard.getNumber("Shooter intake Speed", Config.INTAKE_SHOOTER_MOTOR_SPEED_UP) : 0);
     }
 
     public void intake() {
@@ -95,6 +109,7 @@ public class Shooter extends Subsystem {
     }
 
     public void stopShoot() {
+        intakeShooterOn = false;
         disablePID();
         waitStart = -1;
         waitRunnable = null;
@@ -119,7 +134,7 @@ public class Shooter extends Subsystem {
     // ShotStage shotStage = ShotStage.NONE;
     double desiredShotVelocity = 0.0;
     static final long SHOT_TIME = 1000; // shoot for 1s
-
+    boolean intakeShooterOn = false;
 
     public void startShooting(double targetVelocity) {
 
@@ -132,8 +147,8 @@ public class Shooter extends Subsystem {
         // waitThen(wait, () -> enablePID(targetVelocity));
         SmartDashboard.putNumber("Target Velocity", targetVelocity);
         enablePID(targetVelocity);
-        intakeShoot();
-
+        // intakeShooterOn = true;
+        // intakeShoot();
         // } else {
         //     Robot.LOGGER.info("Already shooting, can't shoot now");
         // }
