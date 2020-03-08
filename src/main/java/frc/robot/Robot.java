@@ -36,8 +36,8 @@ public class Robot extends TimedRobot {
   /**
   * Instantiation of subsystems
   */
-  public static final Encoder m_encoder = new Encoder(Config.ENCODER1_CHANNEL_A, Config.ENCODER1_CHANNEL_B, false, CounterBase.EncodingType.k4X);
-  public static Encoder m_encoder2 = new Encoder(Config.ENCODER2_CHANNEL_A, Config.ENCODER2_CHANNEL_B, true, CounterBase.EncodingType.k4X);
+  // public static final Encoder m_encoder = new Encoder(Config.ENCODER1_CHANNEL_A, Config.ENCODER1_CHANNEL_B, false, CounterBase.EncodingType.k4X);
+  // public static Encoder m_encoder2 = new Encoder(Config.ENCODER2_CHANNEL_A, Config.ENCODER2_CHANNEL_B, true, CounterBase.EncodingType.k4X);
 
 
   public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
@@ -50,6 +50,8 @@ public class Robot extends TimedRobot {
   BallCamera ballCamera;
   TargetCamera targetCamera = new TargetCamera();
 
+  Autonomous autonomousMode;
+
   public static Config config = new Config();
   public static OI m_oi;
 
@@ -57,13 +59,13 @@ public class Robot extends TimedRobot {
 
 
   // Instantiations of commands used in Robot
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  // Command m_autonomousCommand;
+  // SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // Instantiation of Compressor
   Compressor compressor = new Compressor();
 
-  public SendableChooser<Command> m_autoChooser;
+  // public SendableChooser<Command> m_autoChooser;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -78,29 +80,27 @@ public class Robot extends TimedRobot {
     // news. Don't move it.
     m_oi = new OI();
     // instantiate the command used for the autonomous period
-    m_autoChooser = new SendableChooser<Command>();
+    // m_autoChooser = new SendableChooser<Command>();
 
     // create and start the ball detect camera
     ballCamera = new BallCamera();
 
     initOperatorInterface();
-    driveSystem.calibrate();
     driveSystem.reset();
-    m_encoder.setSamplesToAverage(5);
-    m_encoder.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    m_encoder.setMinRate(1.0);
-    m_encoder2.setSamplesToAverage(5);
-    m_encoder2.setDistancePerPulse(1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    m_encoder2.setMinRate(1.0);
-
     driveSystem.calibrate();
+    targetCamera.init();
+    SmartDashboard.putString("Autonomous stage", "new");
   }
+
 
   @Override
   public void autonomousInit() {
-    driveSystem.reset();
-    m_autonomousCommand = (Command) m_autoChooser.getSelected();
-    m_autonomousCommand.start();
+    Robot.LOGGER.warning("AUTONOMOUS INIT");
+    SmartDashboard.putString("Autonomous stage", "init");
+    resetAll();
+
+    autonomousMode = new Autonomous(driveSystem, shooterSystem);
+    autonomousMode.init();
   }
 
   @Override
@@ -111,51 +111,51 @@ public class Robot extends TimedRobot {
   // This function is called periodically during autonomous
   @Override
   public void autonomousPeriodic() {
+    if (isAutonomous()) {
+      autonomousMode.periodic();
+    }
   }
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    resetAll();
+    if (autonomousMode != null) {
+      autonomousMode.reset();
     }
+
+    SmartDashboard.putString("Autonomous stage", "OFF");
 
     Robot.shooterSystem.shuffleBoard();
     Robot.omniSwitch.defaultOmniStatus();
-    m_encoder.reset();
-    m_encoder2.reset();
-    driveSystem.reset(); // reset on teleop, to zero the gyro
+
   }
 
-  boolean lineFollowing = false;
+  void resetAll() {
+    driveSystem.reset(); // reset on teleop, to zero the gyro
+    shooterSystem.reset();
+    elevator.reset();
+  }
+
   // This function is called periodically during operator control
   @Override
   public void teleopPeriodic() {
     updateState();
+    targetCamera.update();
     m_oi.loop();
     omniSwitch.periodic();
     elevator.periodic();
 
     m_oi.arcadeDrive();
 
-    // Implement if line following is required
-    /*if (m_oi.xbox.getXButtonPressed()) {
-      lineFollowing = !lineFollowing;
-      SmartDashboard.putBoolean("Line following", lineFollowing);
-    }
-    if (lineFollowing) {
-      followLine();
-    }
-    else {
-      m_oi.arcadeDrive();
-    } */
-
     Scheduler.getInstance().run();
     updateOperatorInterface();
     LiveWindow.updateValues();
+  }
+
+  @Override
+  public void testInit()
+  {
+    teleopInit();
   }
 
   // This function called periodically during test mode
@@ -257,11 +257,15 @@ public class Robot extends TimedRobot {
   }
 
   void updateOperatorInterface() {
-    SmartDashboard.putNumber("Encoder 1 Distance", m_encoder.getDistance());
-    SmartDashboard.putNumber("Encoder 1 Rate", m_encoder.getRate());
-    SmartDashboard.putNumber("Encoder 2 Distance", m_encoder2.getDistance());
-    SmartDashboard.putNumber("Encoder 2 Rate", m_encoder2.getRate());
-    SmartDashboard.putNumber("Left Quad", driveSystem.getLeftQuadPosition());
-    SmartDashboard.putNumber("Right Quad", driveSystem.getRightQuadPosition());
+    shooterSystem.updateOperatorInterface();
+    targetCamera.shuffleBoard();
+    elevator.updateOperatorInterface();
+    // ballCamera.checkForBall();
+    // SmartDashboard.putNumber("Encoder 1 Distance", m_encoder.getDistance());
+    // SmartDashboard.putNumber("Encoder 1 Rate", m_encoder.getRate());
+    // SmartDashboard.putNumber("Encoder 2 Distance", m_encoder2.getDistance());
+    // SmartDashboard.putNumber("Encoder 2 Rate", m_encoder2.getRate());
+    // SmartDashboard.putNumber("Left Quad", driveSystem.getLeftQuadPosition());
+    // SmartDashboard.putNumber("Right Quad", driveSystem.getRightQuadPosition());
   }
 }

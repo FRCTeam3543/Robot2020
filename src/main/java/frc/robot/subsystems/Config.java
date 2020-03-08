@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 public class Config {
     ////// OPERATOR INTERFACE //////
     public static final int XBOX_PORT  = 0;
+    public static final int XBOX_2_PORT  = 1;
+
     public static final int JOYSTICK_PORT = 1;
 
     ////// VISION //////
@@ -18,8 +20,25 @@ public class Config {
     public static final int CAMERA_WIDTH = 320;
     public static final int CAMERA_HEIGHT = 240;
 
+    //Digital Ports//
+    public static final int ENCODER1_CHANNEL_A = 1;
+    public static final int ENCODER1_CHANNEL_B = 2;
+    public static final int ENCODER2_CHANNEL_A = 4;
+    public static final int ENCODER2_CHANNEL_B = 5;
+    public static final int LINE_SENSOR_LEFT = 8;
+    public static final int LINE_SENSOR_RIGHT = 9;
+
     ///Elevator (Temp)///
-    public static final int ELEVATOR_MOTOR_PORT = 8;
+    public static final int ELEVATOR_LEFT_MOTOR_PORT = 3;
+    public static final int ELEVATOR_RIGHT_MOTOR_PORT = 8;
+
+    public static final int ELEVATOR_LEFT_SWITCH_PORT = 6;
+    public static final int ELEVATOR_RIGHT_SWITCH_PORT = 7;
+
+    public static final double ELEVATOR_UP_SPEED = -0.9;
+    public static final double ELEVATOR_DOWN_SPEED = 1;
+    public static final double ELEVATOR_DOWN_SLOW_SPEED = 0.3;
+
     public static final double ELEVATOR_MOTOR_SPEED_UP = 1;
     public static final double ELEVATOR_MOTOR_STAY = 0.1;
     public static final double ELEVATOR_MOTOR_SPEED_DOWN = -0.5;
@@ -36,6 +55,39 @@ public class Config {
     public static final int SHOOTER_TOP_MOTOR_PORT = 9;
     public static final int SHOOTER_BOTTOM_MOTOR_PORT = 4;
     public static final double SHOOTER_MOTOR_SPEED = 0.5;
+    public static final double SHOOTER_INTAKE_SPEED = 0.5;
+
+    // Shooter encoder ports //
+    public static final int SHOOTER_TOP_ENCODER_PORT_A = ENCODER2_CHANNEL_A; //4
+    public static final int SHOOTER_TOP_ENCODER_PORT_B = ENCODER2_CHANNEL_B; //5
+    public static final int SHOOTER_BOTTOM_ENCODER_PORT_A = ENCODER1_CHANNEL_A; //1
+    public static final int SHOOTER_BOTTOM_ENCODER_PORT_B = ENCODER1_CHANNEL_B; //2
+
+    // Shooter PID //
+    // args are kP, kI, kD, kF
+    // public static final ShooterPID.PIDF SHOOTER_TOP_PIDF = new ShooterPID.PIDF(0.03, 0.00012, 0, 0);
+    public static final ShooterPID.PIDF SHOOTER_TOP_PIDF = new ShooterPID.PIDF(0.032, 0.00015, 0, 0);
+
+    public static final ShooterPID.PIDF SHOOTER_BOTTOM_PIDF = SHOOTER_TOP_PIDF; // assume these are the same motor & encoder
+    public static final double SHOOTER_PID_TOLERANCE_PERCENT = 2; // this is the percent under which the PID is "on target"
+    // Shooter spin
+    // set this to bump the output of the bottom shooter motor
+    // should be greater than 1 for backspin, less than one for topspin
+    public static final double SHOOTER_BACKSPIN_FACTOR = 1.0;
+    public static final double SHOOTER_ANGLE_RADIANS = Math.PI / 4; // 45 degrees
+    // this is the distance from the vertical centerpoint between the top and bottom shooter motors
+    // and the center of the target
+    public static final double SHOOTER_TARGET_HEIGHT_ABOVE_MUZZLE = 2.03; //
+    // this the velocity we shoot at if we don't know the target distance
+    public static final double SHOOTER_NOMINAL_VELOCITY = 0.6; //
+    // this is the radius of the shooter wheel, in m
+    public static final double SHOOTER_WHEEL_RADIUS = 0.076; // FIXME!
+    // this is the max RPM of the encoders - https://www.revrobotics.com/rev-11-1271/
+    // Quadrature Resolution: 2048 Cycles per Revolution (8192 Counts per Revolution)
+    public static final double SHOOTER_ENCODER_PULSES_PER_REV = 8192; // set from docs
+    public static final double SHOOTER_MOTOR_MAX_RPM = 10000; // encoder max
+    public static final double SHOOTER_MOTOR_MAX_RADIANS_PER_SEC = SHOOTER_MOTOR_MAX_RPM / (60 * Math.PI * 2);
+    public static final double SHOOTER_ENCODER_RADIANS_PER_PULSE = (Math.PI * 2) / SHOOTER_ENCODER_PULSES_PER_REV;
 
     // Reverse Speed //
     public static final double SHOOTER_MOTOR_SPEED_REV = -0.4;
@@ -45,6 +97,8 @@ public class Config {
     public static final int INTAKE_TOP_MOTOR_PORT = 10;
     public static final int INTAKE_BOTTOM_MOTOR_PORT = 5;
     public static final double INTAKE_MOTOR_SPEED_UP = 0.8;
+    public static final double INTAKE_SHOOTER_MOTOR_SPEED_UP = 0.45;
+
 
     ///////////////////////////////////
     ///////// Omni Wheel Pneumatics /////////
@@ -54,14 +108,6 @@ public class Config {
 
     public static final double DRIVE_LEFT_QUAD_DPP = 0.00003844376;    // meters per pulse, measured 2/9/19
     public static final double DRIVE_RIGHT_QUAD_DPP = -DRIVE_LEFT_QUAD_DPP;
-
-    //Digital Ports//
-    public static final int ENCODER1_CHANNEL_A = 1;
-    public static final int ENCODER1_CHANNEL_B = 2;
-    public static final int ENCODER2_CHANNEL_A = 4;
-    public static final int ENCODER2_CHANNEL_B = 5;
-    public static final int LINE_SENSOR_LEFT = 8;
-    public static final int LINE_SENSOR_RIGHT = 9;
 
     // PCM Channels
     public static final int COMPRESSOR_PORT 						= 5;

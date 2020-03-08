@@ -162,6 +162,7 @@ public class DriveSubsystem extends Subsystem {
 	}
 
 	public void reset() {
+
 	  	stop();
   		gyro.reset();
   		resetEncoders();
@@ -178,6 +179,11 @@ public class DriveSubsystem extends Subsystem {
 
 	public double getHeading() {
 	  	return this.gyro.getAngle();
+	}
+
+	public void turn(double speed, int dir)
+	{
+		this.arcadeDrive(speed, dir < 0 ? -1 : 1, false);
 	}
 
 	public void initOperatorInterface() {
