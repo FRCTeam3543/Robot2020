@@ -37,6 +37,8 @@ public class OI {
         intakeControl();
         shootControl();
         reverseShootControl();
+        spinnerWheel();
+        spinnerPneumatics();
 	}
 
 	void checkReset() {
@@ -172,4 +174,19 @@ public class OI {
         }
     }
 
+    void spinnerWheel() {
+        if (xbox2.getXButton()) {
+            Robot.spinnerSystem.spin();
+        }
+
+        else {
+            Robot.spinnerSystem.stopSpin();
+        }
+    }
+
+    void spinnerPneumatics() {
+        if (xbox2.getYButtonPressed()) {
+            Robot.spinnerSystem.toggleSpinner();
+        }
+    }
 }

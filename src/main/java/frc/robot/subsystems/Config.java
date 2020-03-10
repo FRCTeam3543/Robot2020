@@ -35,13 +35,13 @@ public class Config {
     public static final int ELEVATOR_LEFT_SWITCH_PORT = 6;
     public static final int ELEVATOR_RIGHT_SWITCH_PORT = 7;
 
-    public static final double ELEVATOR_UP_SPEED = -0.9;
+    public static final double ELEVATOR_UP_SPEED = -1;
     public static final double ELEVATOR_DOWN_SPEED = 1;
     public static final double ELEVATOR_DOWN_SLOW_SPEED = 0.3;
 
-    public static final double ELEVATOR_MOTOR_SPEED_UP = 1;
-    public static final double ELEVATOR_MOTOR_STAY = 0.1;
-    public static final double ELEVATOR_MOTOR_SPEED_DOWN = -0.5;
+    // public static final double ELEVATOR_MOTOR_SPEED_UP = 1;
+    // public static final double ELEVATOR_MOTOR_STAY = 0.1;
+    // public static final double ELEVATOR_MOTOR_SPEED_DOWN = -0.5;
 
     ///// Drivetrain Motor Ports /////////
     public static final int DRIVELINE_LEFT_FRONT_MOTOR_PORT 		= 1;
@@ -115,13 +115,18 @@ public class Config {
     public static final int DRIVELINE_SOLENOID_PORT_2				= 1;
     public static final int DRIVELINE_SOLENOID_PORT_3               = 2;
     public static final int DRIVELINE_SOLENOID_PORT_4               = 3;
-
+    public static final int SPINNER_SOLENOID_PORT_1                 = 4;
+    public static final int SPINNER_SOLENOID_PORT_2                 = 5;
 
     //Gyro
     public static final double GYRO_SENSITIVITY = 0.007;
     public static final int GYRO_PORT = 0;
     public static final double GYRO_GAIN = 1 / 20; // this is the gain applied to the error in angle, for driving straight
 
+    // PWM Ports//
+    public static final int SPINNER_WHEEL_PORT                      = 9;
+
+    public static final double SPINNER_MOTOR_SPEED = 1;
 
     // Analog Ports
     public static final int ULTRASOUND_LEFT = 1;

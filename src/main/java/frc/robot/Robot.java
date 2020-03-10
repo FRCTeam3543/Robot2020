@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
   public static final DistanceSensor distanceSensor = new DistanceSensor();
   public static final OmniWheels omniSwitch = new OmniWheels();
   public static final Shooter shooterSystem = new Shooter();
+  public static final WheelSpin spinnerSystem = new WheelSpin();
 
   BallCamera ballCamera;
   TargetCamera targetCamera = new TargetCamera();
@@ -144,7 +145,7 @@ public class Robot extends TimedRobot {
     m_oi.loop();
     omniSwitch.periodic();
     elevator.periodic();
-
+    spinnerSystem.periodic();
     m_oi.arcadeDrive();
 
     Scheduler.getInstance().run();
